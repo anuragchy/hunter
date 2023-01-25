@@ -42,6 +42,9 @@ class Map:
 		return blockGroup
 
 	@staticmethod
-	def updateEnemies(blocks):
-		pass
+	def updateEnemies(levelmap, enemies):
+		for i in range(len(levelmap)):
+			for j in range(len(levelmap[0])):
+				if levelmap[i][j] == 4:
+					enemy = Enemy()
 		

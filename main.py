@@ -13,13 +13,13 @@ pygame.display.set_caption("Hunter Assassin")
 
 
 level1 = [
-	[0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 1],
-	[0, 1, 2, 0, 1, 1, 0, 0, 0, 0, 0, 1],
-	[0, 2, 2, 0, 1, 1, 0, 0, 0, 0, 0, 2],
+	[0, 1, 1, 2, 1, 1, 2, 1, 1, 4, 1, 1],
+	[0, 1, 2, 0, 0, 1, 0, 2, 1, 0, 4, 1],
+	[0, 2, 2, 0, 0, 1, 0, 0, 1, 0, 0, 2],
 	[0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-	[0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1],
-	[0, 1, 0, 1, 2, 1, 0, 0, 0, 0, 0, 1],
-	[0, 0, 0, 1, 2, 1, 0, 0, 0, 0, 0, 3]
+	[0, 1, 0, 0, 1, 1, 0, 1, 0, 4, 0, 1],
+	[0, 1, 0, 1, 2, 1, 2, 1, 0, 0, 0, 1],
+	[0, 0, 0, 1, 2, 1, 2, 1, 1, 1, 2, 3]
 ]
 
 map1 = Map(level1)
@@ -34,6 +34,8 @@ bulletGroup = pygame.sprite.Group()
 enemy = Enemy(7, blockGroup, player)
 enemyGroup = pygame.sprite.Group()
 enemyGroup.add(enemy)
+
+player.setEnemies(enemyGroup)
 
 while True:
 	clock.tick(60)

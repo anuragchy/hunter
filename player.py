@@ -11,9 +11,13 @@ class Player(pygame.sprite.Sprite):
 		self.facingy = 0
 		self.speed = 5
 		self.health = 100
+		self.enemies = []
 
 	def setHealth(self, health):
 		self.health = health
+
+	def setEnemies(self, enemies):
+		self.enemies = enemies
 
 
 	def get_input(self):
@@ -51,6 +55,10 @@ class Player(pygame.sprite.Sprite):
 					if self.rect.colliderect(sprite.rect):
 						self.rect.right = sprite.rect.left
 
+		elif key[pygame.K_f]:
+			for enemy in self.enemies.sprites():
+				if enemy.rect.colliderect(self.rect):
+					enemy.kill()
 	def update(self):
 		self.get_input()
 
@@ -111,6 +119,10 @@ class Enemy(Player):
 			self.cooldown += 1
 
 	def update(self, surf):
+		if self.up:
+			self.line = pygame.draw.line(surf, (255, 255, 255), (self.rect.x+50, self.rect.y+50), (self.rect.x+50, 0), 1)
+		elif self.up == False:
+			self.line = pygame.draw.line(surf, (255, 255, 255), (self.rect.x+50, self.rect.y+50), (self.rect.x+50, 700), 1)
 		if self.rect.y == 0:
 			self.image = pygame.transform.rotozoom(self.ogimage, 180, 1)
 			self.up = False
@@ -123,4 +135,5 @@ class Enemy(Player):
 			self.rect.y += self.speed
 		self.bulletGroup.draw(surf)
 		self.bulletGroup.update()
-		self.shoot()
+		if self.player.rect.colliderect(self.line):
+			self.shoot()
