@@ -63,8 +63,8 @@ class Bullet(pygame.sprite.Sprite):
 		self.rect = self.image.get_rect()
 		self.player = player
 		self.facing = facing
-		self.rect.x = posx + 50
-		self.rect.y = posy
+		self.rect.x = posx-5
+		self.rect.y = posy+50
 		self.speed = 10
 
 	def update(self):
@@ -74,13 +74,17 @@ class Bullet(pygame.sprite.Sprite):
 		elif self.facing == 'up':
 			self.image = pygame.transform.rotozoom(self.ogimage, 90, 1)
 			self.rect.y -= self.speed
-		if self.rect.colliderect(self.player.rect) or (self.rect.y == 0 or self.rect.y == 660):
+		if self.rect.colliderect(self.player.rect):
 			newhealth = self.player.health-5
 			self.player.setHealth(newhealth)
+			if self.player.health < 0:
+				self.player.kill()
 			print(self.player.health)
+		if (self.rect.y == 0 or self.rect.y == 660):
+			self.kill()
 
 class Enemy(Player):
-	def __init__(self, col, blocks, player, bulletGroup):
+	def __init__(self, col, blocks, player):
 		super().__init__(blocks)
 		self.image = pygame.image.load("assets/enemy.png")
 		self.image = pygame.transform.scale(self.image, (100, 100))
@@ -92,21 +96,21 @@ class Enemy(Player):
 		self.up = False
 		self.speed = 1
 		self.cooldown = 0
-		self.bulletGroup = bulletGroup
+		self.bulletGroup = pygame.sprite.Group()
 
 	def shoot(self):
 		if self.cooldown > 20:
 			self.cooldown = 0
 			if self.up == True:
-				bullet = Bullet(self.player, self.rect.x, self.rect.y, 'up')
+				bullet = Bullet(self.player, self.rect.x+25, self.rect.y, 'up')
 				self.bulletGroup.add(bullet)
 			elif self.up == False:
-				bullet = Bullet(self.player, self.rect.x, self.rect.y, 'down')
+				bullet = Bullet(self.player, self.rect.x+25, self.rect.y, 'down')
 				self.bulletGroup.add(bullet)
 		else:
 			self.cooldown += 1
 
-	def update(self):
+	def update(self, surf):
 		if self.rect.y == 0:
 			self.image = pygame.transform.rotozoom(self.ogimage, 180, 1)
 			self.up = False
@@ -117,4 +121,6 @@ class Enemy(Player):
 			self.rect.y -= self.speed
 		elif not self.up:
 			self.rect.y += self.speed
+		self.bulletGroup.draw(surf)
+		self.bulletGroup.update()
 		self.shoot()

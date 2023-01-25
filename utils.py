@@ -40,3 +40,8 @@ class Map:
 					wb = Block('start', j, i)
 
 		return blockGroup
+
+	@staticmethod
+	def updateEnemies(blocks):
+		pass
+		

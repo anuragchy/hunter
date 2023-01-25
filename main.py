@@ -31,7 +31,7 @@ playerGroup.add(player)
 
 backImage = pygame.image.load("assets/back.jpg")
 bulletGroup = pygame.sprite.Group()
-enemy = Enemy(7, blockGroup, player, bulletGroup)
+enemy = Enemy(7, blockGroup, player)
 enemyGroup = pygame.sprite.Group()
 enemyGroup.add(enemy)
 
@@ -47,7 +47,5 @@ while True:
 	playerGroup.update()
 	blockGroup.update(win)
 	enemyGroup.draw(win)
-	enemyGroup.update()
-	bulletGroup.draw(win)
-	bulletGroup.update()
+	enemyGroup.update(win)
 	pygame.display.update()
