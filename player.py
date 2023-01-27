@@ -92,17 +92,17 @@ class Bullet(pygame.sprite.Sprite):
 			self.kill()
 
 class Enemy(Player):
-	def __init__(self, col, blocks, player):
+	def __init__(self, col, row, blocks, player):
 		super().__init__(blocks)
 		self.image = pygame.image.load("assets/enemy.png")
 		self.image = pygame.transform.scale(self.image, (100, 100))
 		self.ogimage = self.image
 		self.rect = self.image.get_rect()
-		self.rect.y = 0
+		self.rect.y = row*100
 		self.rect.x = col*100
 		self.player = player
-		self.up = False
-		self.speed = 1
+		self.facingy = 1
+		self.speed = 5
 		self.cooldown = 0
 		self.bulletGroup = pygame.sprite.Group()
 
@@ -119,21 +119,22 @@ class Enemy(Player):
 			self.cooldown += 1
 
 	def update(self, surf):
-		if self.up:
-			self.line = pygame.draw.line(surf, (255, 255, 255), (self.rect.x+50, self.rect.y+50), (self.rect.x+50, 0), 1)
-		elif self.up == False:
-			self.line = pygame.draw.line(surf, (255, 255, 255), (self.rect.x+50, self.rect.y+50), (self.rect.x+50, 700), 1)
 		if self.rect.y == 0:
 			self.image = pygame.transform.rotozoom(self.ogimage, 180, 1)
-			self.up = False
+			self.facingy = 1
+			if self.rect.y > 0:
+				self.rect.y += self.facingy*self.speed
+				for sprite in self.blocks.sprites():
+					if self.rect.colliderect(sprite.rect):
+						self.rect.top = sprite.rect.bottom
 		elif self.rect.y == 600:
 			self.image = self.ogimage
 			self.up = True
-		if self.up:
-			self.rect.y -= self.speed
-		elif not self.up:
-			self.rect.y += self.speed
+			self.facingy = 1
+			if self.rect.y + self.rect.h < 690:
+				self.rect.y += self.facingy*self.speed
+				for sprite in self.blocks.sprites():
+					if self.rect.colliderect(sprite.rect):
+						self.rect.bottom = sprite.rect.top
 		self.bulletGroup.draw(surf)
 		self.bulletGroup.update()
-		if self.player.rect.colliderect(self.line):
-			self.shoot()

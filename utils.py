@@ -47,4 +47,3 @@ class Map:
 			for j in range(len(levelmap[0])):
 				if levelmap[i][j] == 4:
 					enemy = Enemy()
-		

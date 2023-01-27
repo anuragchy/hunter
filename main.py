@@ -13,7 +13,7 @@ pygame.display.set_caption("Hunter Assassin")
 
 
 level1 = [
-	[0, 1, 1, 2, 1, 1, 2, 1, 1, 4, 1, 1],
+	[0, 1, 1, 2, 1, 1, 2, 1, 1, 0, 1, 1],
 	[0, 1, 2, 0, 0, 1, 0, 2, 1, 0, 4, 1],
 	[0, 2, 2, 0, 0, 1, 0, 0, 1, 0, 0, 2],
 	[0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
@@ -31,7 +31,7 @@ playerGroup.add(player)
 
 backImage = pygame.image.load("assets/back.jpg")
 bulletGroup = pygame.sprite.Group()
-enemy = Enemy(7, blockGroup, player)
+enemy = Enemy(9, 3, blockGroup, player)
 enemyGroup = pygame.sprite.Group()
 enemyGroup.add(enemy)
 
